@@ -3,6 +3,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -13,7 +14,7 @@ import java.util.stream.Stream;
 
 public class HotelSearch {
     @Test
-    public void searchHotel() throws InterruptedException {
+    public void searchHotel(){
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.get("http://www.kurs-selenium.pl/demo/");
@@ -32,13 +33,32 @@ public class HotelSearch {
         driver.findElement(By.id("childPlusBtn")).click();
         driver.findElement(By.xpath("//button[text()=' Search']")).click();
         List<String> hotelNames = driver.findElements(By.xpath("//h4[contains(@class,'list_title')]//b")).stream()
-                .map(el -> el.getAttribute("textContent")).collect(Collectors.toList());
+                .map(el -> el.getAttribute("textContent")).toList();
 
         Assert.assertEquals("Jumeirah Beach Hotel",hotelNames.get(0));
         Assert.assertEquals("Oasis Beach Tower",hotelNames.get(1));
         Assert.assertEquals("Rose Rayhaan Rotana",hotelNames.get(2));
         Assert.assertEquals("Hyatt Regency Perth",hotelNames.get(3));
 
+    }
+    @Test
+    public void noResult() {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().window().maximize();
+
+        driver.get("http://www.kurs-selenium.pl/demo/");
+        driver.findElement(By.name("checkin")).sendKeys("02/02/2024");
+        driver.findElement(By.name("checkout")).sendKeys("14/02/2024");
+        driver.findElement(By.name("travellers")).click();
+        driver.findElement(By.id("childPlusBtn")).click();
+        driver.findElement(By.xpath("//button[text()=' Search']")).click();
+        WebElement noResultHeading = driver.findElement(By.xpath("//div[@class='itemscontainer']//h2"));
+
+        Assert.assertTrue(noResultHeading.isDisplayed());
+        Assert.assertEquals("No Results Found",noResultHeading.getText());
     }
     }
 
