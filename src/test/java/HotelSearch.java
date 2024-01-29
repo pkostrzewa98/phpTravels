@@ -3,14 +3,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class HotelSearch {
     @Test
@@ -45,7 +42,6 @@ public class HotelSearch {
     public void noResult() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
-        ChromeOptions options = new ChromeOptions();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
