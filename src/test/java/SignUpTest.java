@@ -1,28 +1,19 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-
-import java.time.Duration;
 import java.util.List;
 
-public class SignUpTest {
+public class SignUpTest extends BaseTest {
+
     @Test
-    public void signUp() {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        int randomNumber = (int) (Math.random() * 1000);
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
+    public void signUpTest() {
 
         driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream().
                 filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click);
         String lastName = "Newman";
+        int randomNumber = (int) (Math.random()*1000);
         driver.findElements(By.xpath("//a[text()='  Sign Up']")).get(1).click();
         driver.findElement(By.name("firstname")).sendKeys("Joe");
         driver.findElement(By.name("lastname")).sendKeys(lastName);
@@ -35,20 +26,10 @@ public class SignUpTest {
         Assert.assertTrue(heading.getText().contains(lastName));
         Assert.assertEquals(heading.getText(), "Hi, Joe Newman");
 
-
     }
 
     @Test
-    public void signUpEmptyForm() {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        int randomNumber = (int) (Math.random() * 1000);
-        String email = "test" + randomNumber + "@pmail.con";
-        String lastName = "Newman";
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
-
+    public void signUpEmptyFormTest() {
         driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream().
                 filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click);
         driver.findElements(By.xpath("//a[text()='  Sign Up']")).get(1).click();
@@ -61,18 +42,15 @@ public class SignUpTest {
         softAssert.assertTrue(errors.contains("The Password field is required."));
         softAssert.assertTrue(errors.contains("The First name field is required."));
         softAssert.assertTrue(errors.contains("The Last Name field is required."));
+
     }
 
     @Test
-    public void signUpInvalidEmail() {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    public void signUpInvalidEmailTest() {
+
         int randomNumber = (int) (Math.random() * 1000);
         String email = "test" + randomNumber;
         String lastName = "Newman";
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
 
         driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream().
                 filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click);
@@ -88,6 +66,7 @@ public class SignUpTest {
         List<String> errors = driver.findElements(By.xpath("//div[@class='alert alert-danger']//p")).stream().map(WebElement::getText).toList();
 
         Assert.assertTrue(errors.contains("The Email field must contain a valid email address."));
+
     }
 }
 
