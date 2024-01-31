@@ -5,8 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pl.seleniumdemo.tests.BaseTest;
-
 import java.util.List;
 
 public class SignUpTest extends BaseTest {
