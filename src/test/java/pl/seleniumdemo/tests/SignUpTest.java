@@ -16,9 +16,10 @@ public class SignUpTest extends BaseTest {
     @Test
     public void signUpTest() {
 
-        int randomNumber = (int) (Math.random()*1000);
+        int randomNumber = (int) (Math.random() * 1000);
         String lastName = "Newman";
         String email = "test" + randomNumber + "@pmail.com";
+
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         hotelSearchPage.openSignUpForm();
 
@@ -31,7 +32,6 @@ public class SignUpTest extends BaseTest {
         signUpPage.confirmPassword("Test123@");
         signUpPage.clickSignUpButton();
 
-        WebElement heading = driver.findElement(By.xpath("//h3[@class='RTL']"));
         LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
         Assert.assertTrue(loggedUserPage.getHeadingText().contains(lastName));
         Assert.assertEquals(loggedUserPage.getHeadingText(), "Hi, Joe Newman");
