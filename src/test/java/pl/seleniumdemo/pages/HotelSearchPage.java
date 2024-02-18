@@ -86,9 +86,9 @@ public class HotelSearchPage {
     }
 
     public void performSearch() {
-        System.out.println("Performing search");
+        logger.info("Performing search");
         searchBtn.click();
-        System.out.println("Searching done");
+        logger.info("Searching done");
     }
 
     public void openSignUpForm() {
